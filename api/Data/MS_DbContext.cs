@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
@@ -9,5 +10,9 @@ namespace api.Data
         { 
 
         }
+
+        public DbSet<Service> Service { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
     }
 }
