@@ -21,13 +21,14 @@ builder.Services.AddSwaggerGen( options =>
 });
 
 builder.Services.AddDbContext<MS_DbContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("ArchConnection"))
     );
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<MS_DbContext>();
 
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -43,6 +44,11 @@ app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors(builder => builder
+     .AllowAnyOrigin()
+     .AllowAnyMethod()
+     .AllowAnyHeader());
 
 app.MapControllers();
 

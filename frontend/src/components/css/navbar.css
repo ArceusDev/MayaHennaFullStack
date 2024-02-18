@@ -17,19 +17,6 @@
     color: black;
 }
 
-/* .navbar-logo {
-    margin-right: auto;
-    margin-left: 20px;
-    font-size: 3rem;
-
-
-    font-family: 'Libre Baskerville', serif;
-    font-weight: 700;
-    font-family: 'Playfair Display', serif;
-    font-weight: 400;
-    text-transform: uppercase;
-} */
-
 .navbar-links-container {
     display: flex;
     justify-content: center;
@@ -48,6 +35,9 @@
     text-transform: uppercase;
     letter-spacing: 3px;
     /* color: black; */
+}
+.navbar-btn:hover{
+    text-decoration: underline;
 }
 .logout-icon{
     font-size: 1.8rem;

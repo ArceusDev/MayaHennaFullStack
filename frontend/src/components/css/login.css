@@ -3,11 +3,14 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    /* background-color: #f4f4f4; */
+    background-color: #F3DCD4;
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
 }
 
 .login-form {
-    background-color: #fff;
+    background-color: #F2E5D5;
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -18,15 +21,16 @@
 
 .login-form h3 {
     margin-bottom: 20px;
-    color: #333;
+    color: black;
 }
 
+.email-input,
 .password-input,
 .username-input {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #F2E5D5;
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 1rem;
@@ -35,15 +39,17 @@
 .submit-btn {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
+    background-color: black;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
 }
 
 .submit-btn:hover {
-    background-color: #0056b3;
+    background-color: rgb(62, 62, 62);
 }
 
 .nf {
