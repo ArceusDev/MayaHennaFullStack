@@ -1,10 +1,10 @@
 import React from "react"
 import PropTypes from 'prop-types';
 // import product from "./productData.json"
-import "./css/product.css"
+import "./Products.css"
 
 // temp import
-import img from "./mockImg.jpeg"
+import img from "/mockImg.jpeg"
 
 export default function Products(props) {
 

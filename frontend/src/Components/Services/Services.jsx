@@ -1,6 +1,6 @@
 import React from "react"
 // import service from "./serviceData.json"
-import "./css/services.css"
+import "./Services.css"
 
 import PropTypes from 'prop-types';
 

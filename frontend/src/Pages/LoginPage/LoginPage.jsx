@@ -1,9 +1,9 @@
 import React from "react";
-import './css/login.css'
+import './LoginPage.css'
 
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function LoginPage() {
 
     let navigate = useNavigate()
 

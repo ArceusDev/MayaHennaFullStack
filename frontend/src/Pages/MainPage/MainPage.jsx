@@ -1,8 +1,8 @@
-import Navbar from "./Navbar"
-import Services from "./Services"
-import Products from "./Products"
+import Navbar from "../../Components/Navbar/Navbar"
+import Services from "../../Components/Services/Services"
+import Products from "../../Components/Products/Products"
 
-import "./css/mainpage.css"
+import "./MainPage.css"
 import React from "react"
 
 

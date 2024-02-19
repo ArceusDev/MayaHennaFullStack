@@ -1,8 +1,6 @@
-import './App.css'
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Login from './components/Login'
-import MainPage from './components/MainPage'
+import Login from './Pages/LoginPage/LoginPage'
+import MainPage from './Pages/MainPage/MainPage'
 
 
 export default function Index() {
@@ -13,8 +11,8 @@ export default function Index() {
                 <Link to="/mainpage">mainPage</Link> */}
 
                 <Routes>
-                    <Route path='/login' element={<Login />}></Route>
-                    <Route path='/mainPage' element={<MainPage />}></Route>
+                    <Route path='/' element={<MainPage />}></Route>
+                    <Route path='/login' element={<Login />}></Route>                   
                 </Routes>
 
             </BrowserRouter>

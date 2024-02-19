@@ -1,4 +1,4 @@
-import './css/navbar.css';
+import './Navbar.css';
 
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
