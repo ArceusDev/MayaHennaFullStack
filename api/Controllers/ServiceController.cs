@@ -1,4 +1,8 @@
 ﻿using api.Data;
+using api.DTOs;
+using api.Helpers;
+using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,125 +17,85 @@ namespace api.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly MS_DbContext _context;
-        public ServiceController(MS_DbContext context)
+        private readonly IServiceRepository _serviceRepo;
+        public ServiceController(MS_DbContext context, IServiceRepository serviceRepo)
         {
+            _serviceRepo = serviceRepo;
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> GetAllServices()
+        public async Task<ActionResult> GetAllServices([FromQuery] QueryObject query)
         {
-            var service = await _context.Service.ToListAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (service == null)
-            {
-                return NotFound();
-            }
+            var services = await _serviceRepo.GetAllAsync(query);
 
-            return Ok(service);
+            var serviceDto = services.Select(s => s.ToServiceDto()).ToList();
+
+            return Ok(serviceDto);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Service>>> GetService(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetService([FromRoute] int id)
         {
-            var service = await _context.Service.FindAsync(id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = await _serviceRepo.GetByIdAsync(id);
 
             if (service == null)
             {
                 return NotFound();
             }
 
-            return Ok(service);
+            return Ok(service.ToServiceDto());
         }
 
         [HttpPost, Authorize]
-        public async Task<ActionResult<Service>> AddService([FromBody] Service service)
+        public async Task<ActionResult> AddService([FromBody] UpdateServiceDto serviceDto)
         {
-            _context.Service.Add(service);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            await _context.SaveChangesAsync();
+            var service = serviceDto.ToServiceFromUpdateDto();
 
-            return CreatedAtAction(nameof(GetService), new { id = service.Id }, service);
+            await _serviceRepo.CreateAsync(service);
+
+            return CreatedAtAction(nameof(GetService), new { id = service.Id }, service.ToServiceDto());
         }
 
-        [HttpPut("{id}"), Authorize]
-        public async Task<IActionResult> UpdateService(int id, Service service)
+        [HttpPut("{id:int}"), Authorize]
+        public async Task<IActionResult> UpdateService([FromRoute] int id, [FromBody] UpdateServiceDto updateServiceDto)
         {
-            if (id != service.Id)
-            {
-                return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            _context.Entry(service).State = EntityState.Modified;
+            var service = await _serviceRepo.UpdateAsync(id, updateServiceDto);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                var ser = await _context.Service.FindAsync(id);
-                if (ser == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}"), Authorize]
-        public async Task<IActionResult> DeleteTodoItem(int id)
-        {
-            var service = await _context.Service.FindAsync(id);
             if (service == null)
             {
                 return NotFound();
             }
 
-            _context.Service.Remove(service);
-            await _context.SaveChangesAsync();
+            return Ok(service.ToServiceDto());
+        }
+
+        [HttpDelete("{id:int}"), Authorize]
+        public async Task<IActionResult> DeleteTodoItem([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = await _serviceRepo.DeleteAsync(id);
+
+            if (service == null)
+            {
+                return NotFound();
+            }
 
             return NoContent();
         }
-
-        /*
-        // GET: api/<ServiceController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<ServiceController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ServiceController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ServiceController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ServiceController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        */
     }
 }
