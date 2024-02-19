@@ -1,0 +1,49 @@
+.navbar {
+    /* background-color: rgba(0, 0, 139, 0.8); */
+    background-color: rgba(115, 98, 92, 0.6);
+    /* background-color: #73625C; */
+    background-color: black;
+    
+    padding: 10px 0;
+    /* border-radius: 15px;  */
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: black;
+}
+
+.navbar-links-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+
+.navbar-btn {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 13px;
+
+    font-family: 'Gothic A1', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    /* color: black; */
+}
+.navbar-btn:hover{
+    text-decoration: underline;
+}
+.logout-icon{
+    font-size: 1.8rem;
+    /* color: #fff; */
+    font-weight: 400;
+    margin: 0 30px;
+
+
+}
