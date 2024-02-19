@@ -13,6 +13,5 @@ namespace api.Data
 
         public DbSet<Service> Service { get; set; }
         public DbSet<Product> Product { get; set; }
-        public DbSet<ProductImage> ProductImage { get; set; }
     }
 }

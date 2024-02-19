@@ -1,4 +1,8 @@
 ﻿using api.Data;
+using api.DTOs;
+using api.Helpers;
+using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,88 +16,83 @@ namespace api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly MS_DbContext _context;
-        public ProductController(MS_DbContext context)
+        private readonly IProductRepository _productRepo;
+        public ProductController(MS_DbContext context, IProductRepository productRepo)
         {
+            _productRepo = productRepo;
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
+        public async Task<ActionResult> GetAllProducts([FromQuery] QueryObject query)
         {
-            var product = await _context.Product.ToListAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+            var products = await _productRepo.GetAllAsync(query);
 
-            return Ok(product);
+            var productDto = products.Select(s => s.ToProductDto()).ToList();
+
+            return Ok(productDto);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProduct(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> GetProduct([FromRoute] int id)
         {
-            var product = await _context.Product.FindAsync(id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var product = await _productRepo.GetByIdAsync(id);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(product.ToProductDto());
         }
 
         [HttpPost, Authorize]
-        public async Task<ActionResult<Product>> AddProduct([FromBody] Product product)
+        public async Task<ActionResult> AddProduct([FromBody] UpdateProductDto productDto)
         {
-            _context.Product.Add(product);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            await _context.SaveChangesAsync();
+            var product = productDto.ToProductFromUpdateDto();
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            await _productRepo.CreateAsync(product);
+
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product.ToProductDto());
         }
 
-        [HttpPut("{id}"), Authorize]
-        public async Task<IActionResult> UpdateProduct(int id, Product product)
+        [HttpPut("{id:int}"), Authorize]
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id,[FromBody] UpdateProductDto updateProductDto)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            _context.Entry(product).State = EntityState.Modified;
+            var product = await _productRepo.UpdateAsync(id, updateProductDto);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                var ser = await _context.Product.FindAsync(id);
-                if (ser == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}"), Authorize]
-        public async Task<IActionResult> DeleteTodoItem(int id)
-        {
-            var product = await _context.Product.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Product.Remove(product);
-            await _context.SaveChangesAsync();
+            return Ok(product.ToProductDto());
+        }
+
+        [HttpDelete("{id:int}"), Authorize]
+        public async Task<IActionResult> DeleteTodoItem([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var product = await _productRepo.DeleteAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
 
             return NoContent();
         }
