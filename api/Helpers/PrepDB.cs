@@ -18,9 +18,39 @@ namespace api.Helpers
 
             context.Database.Migrate();
 
-            if (!context.Service.Any() || !context.Product.Any())
+            if (!context.Service.Any() && !context.Product.Any())
             {
                 System.Console.WriteLine("Adding data - seeding...");
+                context.Product.AddRange(
+                    new Models.Product
+                    {
+                        Title = "Pack of 5 Ultra Magical Organic Henna",
+                        Description = "Ultra Magical Organic Henna is 100% Pure, Natural & Chemical free. It is handmade with all natural ingredients including Triple Sifted Sojat Rajasthani henna powder, sugar, essential oils etc.\r\n\r\n✅ Ultra-fine Tip Size: 0.38mm\r\n✅ Weight: 25 gram\r\n✅ Length: 5-6 inches",
+                        Price = 10,
+                        Picturelink = "https://res.cloudinary.com/don6c7ggw/image/upload/v1708369497/ae9geent75nppwk62f8y.png"
+                    },
+                    new Models.Product
+                    {
+                        Title = "1 Ultra Magical Organic Henna",
+                        Description = "Ultra Magical Organic Henna is 100% Pure, Natural & Chemical free. It is handmade with all natural ingredients including Triple Sifted Sojat Rajasthani henna powder, sugar, essential oils etc.\r\n\r\n✅ Ultra-fine Tip Size: 0.38mm\r\n✅ Weight: 25 gram\r\n✅ Length: 5-6 inches",
+                        Price = 2,
+                        Picturelink = "https://res.cloudinary.com/don6c7ggw/image/upload/v1708369497/talbxhcc6yxwujde2kj4.png"
+                    },
+                    new Models.Product
+                    {
+                        Title = "Henna Aftercare Sealant Spray",
+                        Description = "Henna Aftercare Sealant Spray is an ideal aftercare solution to seal your dried henna design onto the skin and darken your henna stain like never before. It is exquisitely formulated with lemon, sugar, rose water and essential oils.",
+                        Price = 5,
+                        Picturelink = "https://res.cloudinary.com/don6c7ggw/image/upload/v1708369496/wk0mgpzmbcaefkpinzrs.jpg"
+                    },
+                    new Models.Product
+                    {
+                        Title = "Henna Aftercare Oil",
+                        Description = "Henna Aftercare Oil is delicately made with love by using 100% pure & natural essential Oils, which give a new life to your fresh henna stain, while create a barrier between skin & water.\r\n\r\nHow to use Henna Aftercare Oil?\r\n\r\nApply the Mehndi Aftercare Oil 10 minutes before henna removal, then scrap off your henna paste. Leave the oil on the skin, keep applying it frequently for the next 24 hours.",
+                        Price = 4,
+                        Picturelink = "https://res.cloudinary.com/don6c7ggw/image/upload/v1708369496/q6atouqkkc3bc1ypvach.jpg"
+                    }
+                    );
                 context.Service.AddRange(
                     new Models.Service()
                     {
