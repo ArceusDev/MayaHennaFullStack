@@ -1,0 +1,72 @@
+.service-table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: 5%;
+    margin-top: 3%;
+    border-bottom: 1px solid #0a0a0a;
+    font-family: 'Gothic A1', sans-serif;
+    margin-bottom: 1%;
+
+
+}
+
+.service-table th, .service-table td {
+    /* border: 1px solid #0a0a0a; */
+    padding: 12px;
+    text-align: left;
+}
+
+.service-table th {
+    background-color: #070606;
+    font-weight: bold;
+    color: white;
+    border: 1px solid white;
+}
+
+.service-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.description-cell {
+    max-width: 200px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.edit-btn {
+    padding: 8px 12px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 60%;
+    margin-bottom: 5px;
+}
+
+.edit-btn:hover {
+    background-color: #3b3b3b;
+}
+.action-col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-btn{
+    /* border: 1px solid black; */
+    justify-content: center;
+    display: flex;
+    padding: 0 10px 10px 10px;
+
+}
+.page-btn>button{
+    margin-right: 20px;
+    padding: 10px;
+    font-size: 1.4rem;
+    background-color: #000000;
+    color: white;
+    border: none;
+
+}

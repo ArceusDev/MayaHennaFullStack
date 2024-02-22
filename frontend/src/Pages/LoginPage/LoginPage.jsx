@@ -14,32 +14,39 @@ export default function LoginPage() {
 
     const [invalidLogin, setInvalidLogin] = React.useState(false)
     const [errorMsg, setErrorMsg] = React.useState("")
+    const [bearer, setBearer] = React.useState("")
 
-    function handleSubmit(event) {
+
+
+    async function handleSubmit(event) {
         event.preventDefault();
-
-        console.log(JSON.stringify(loginData));
-
-        fetch("https://localhost:7086/login", {
+    
+        fetch("http://localhost:5036/login", {
             method: "POST",
             body: JSON.stringify(loginData),
             headers: {
                 "Content-Type": "application/json"
             }
         })
-            .then(res => {
-                if (res.status == 200) {
-                    navigate("/mainPage")
-                } else {
-                    setInvalidLogin(true);
-                    setErrorMsg("Invalid login or password");
-                }
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            throw new Error("Invalid credentials");
+        })
+        .then(data => {
+            localStorage.setItem("Bearer", data.accessToken);
+            setBearer(data.accessToken);
 
-            })
-
-
-
+            navigate("/dashboard");
+        })
+        .catch(error => {
+            console.error("Login error:", error);
+            setErrorMsg("Invalid email or password");
+            setInvalidLogin(true);
+        });
     }
+    
 
     function handleChange(event) {
         const { name, value } = event.target;

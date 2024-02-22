@@ -1,10 +1,11 @@
 import './Navbar.css';
 
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 export default function Navbar(props){
+    const navigate = useNavigate()
 
     function toggleServices(){
         props.setServiceExpand(true)
@@ -20,9 +21,9 @@ export default function Navbar(props){
                 <nav className="navbar-links-container">
                     <a href="#" className="navbar-btn" onClick={()=> {toggleServices()}}>Services</a>
                     <a href="#" className="navbar-btn" onClick={()=> {toggleProducts()}}>Products</a>
+                    
                     <Link to="/login" className="navbar-btn">Login</Link>
 
-                    {/* <i className='nf nf-fa-sign_out logout-icon'></i> */}
 
                 </nav>
             </div>
