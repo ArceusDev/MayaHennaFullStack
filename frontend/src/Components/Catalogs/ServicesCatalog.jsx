@@ -14,8 +14,28 @@ export default function ServicesCatalog(props) {
     const [pageNum, setPageNum] = React.useState(1)
     const [deleteFormState, setDeleteFormState] = React.useState(false)
     const [deleteId, setDeleteId] = React.useState(null)
-    const[refreshTable, setReafreshTable] = React.useState(false)
+    const [sort, setSort] = React.useState(false)
+    
+    React.useEffect(()=>{
+        async function sortDescending() {
+            try {
+                const response = await fetch(`http://localhost:5036/api/Service?SortBy=price&IsDecsending=${sort}&PageNumber=${pageNum}`, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const data = await response.json();
+                setServices(data)
+            }
+            catch (error) {
+                console.error("Error fetching services:", error);
+            }
+        }
 
+        sortDescending()
+        
+    },[sort])
 
     React.useEffect(() => {
 
@@ -59,7 +79,7 @@ export default function ServicesCatalog(props) {
         }
 
 
-    }, [props.searchInput, pageNum ,refreshTable])
+    }, [props.searchInput, pageNum ,props.refreshTable])
 
 
 
@@ -110,7 +130,14 @@ export default function ServicesCatalog(props) {
                         <th>ID</th>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Price</th>
+                        <th>
+                            Price 
+                            {
+                                sort ? <i className="nf nf-md-sort_ascending sort-icon" onClick={()=> {setSort(false)}}></i>
+                                     :  <i className="nf nf-md-sort_descending sort-icon" onClick={()=> {setSort(true)}}></i>
+                            }
+                            
+                        </th>
                         <th>Type</th>
                         <th>Action</th>
                     </tr>
@@ -131,13 +158,14 @@ export default function ServicesCatalog(props) {
             {serviceForm ? <EditServiceForm
                 serviceID={serviceID}
                 setServiceForm={setServiceForm}
+                setReafreshTable={props.setReafreshTable}
             />
 
                 : <></>
             }
 
             {
-                deleteFormState && deleteId !== null ? <Warning deleteId={deleteId} setDeleteFormState={setDeleteFormState} setReafreshTable={setReafreshTable}/> : <></>
+                deleteFormState && deleteId !== null ? <Warning deleteId={deleteId} setDeleteFormState={setDeleteFormState} setReafreshTable={props.setReafreshTable}/> : <></>
             }
 
         </>
@@ -146,5 +174,7 @@ export default function ServicesCatalog(props) {
 }
 
 ServicesCatalog.propTypes = {
-    searchInput: PropTypes.string
+    searchInput: PropTypes.string,
+    refreshTable: PropTypes.bool,
+    setReafreshTable: PropTypes.func,
 };

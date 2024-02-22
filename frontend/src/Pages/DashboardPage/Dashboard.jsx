@@ -14,6 +14,8 @@ export default function Dashboard() {
     const [createProduct, setCreateProduct] = React.useState(false)
     const [create, setCreate] = React.useState("")
 
+    const [refreshTable, setReafreshTable] = React.useState(false)
+
     const [searchInput, setSearchInput] = React.useState("")
 
     function setCatalog(option) {
@@ -50,8 +52,8 @@ export default function Dashboard() {
                         <option value="products">products</option>
                     </select>
                     {
-                        catalogOptions === "services"? <button className="dashboard-option" onClick={() => { setCreateService(true) }}>Create Service</button>
-                        :catalogOptions === "products"?<button className="dashboard-option" onClick={() => { setCreateProduct(true) }}>Create product</button> : null
+                        catalogOptions === "services" ? <button className="dashboard-option" onClick={() => { setCreateService(true) }}>Create Service</button>
+                            : catalogOptions === "products" ? <button className="dashboard-option" onClick={() => { setCreateProduct(true) }}>Create product</button> : null
 
                     }
                     {/* <button className="dashboard-option" onClick={() => { settingNavBtn() }}>{createService == "services" ? "create service" : "create product"}</button> */}
@@ -72,23 +74,26 @@ export default function Dashboard() {
 
             {catalogOptions === "services" ? (
                 <>
-                    <ServicesCatalog searchInput={searchInput} />
+                    <ServicesCatalog searchInput={searchInput} refreshTable={refreshTable} setReafreshTable={setReafreshTable}/>
                     {createService ?
                         <EditServiceForm
                             serviceID={null}
                             setServiceForm={setCreateService}
+                            setReafreshTable={setReafreshTable}
                         />
                         : null}
                 </>
             ) : (
-                <ProductsCatalog searchInput={searchInput} />
+                <ProductsCatalog searchInput={searchInput} refreshTable={refreshTable} setReafreshTable={setReafreshTable} />
             )}
             {createProduct ?
-                <EditProductForm 
+                <EditProductForm
                     productID={null}
                     setProductForm={setCreateProduct}
+                    setReafreshTable={setReafreshTable}
 
-                /> : null}
+                />
+                : null}
 
 
         </>

@@ -28,8 +28,6 @@ export default function Index() {
 
                     }
 
-
-
                 </Routes>
 
             </BrowserRouter>

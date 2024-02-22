@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
+import './Warning.css';
 
-export default function Warning(props){
+export default function Warning(props) {
 
-    function deleteWarning(){
+    function deleteWarning() {
         props.setDeleteFormState(false)
     }
 
-    function deleteFun(id){
+    function deleteFun(id) {
         console.log(id);
 
 
-        fetch(`http://localhost:5036/api/Service/${id}`,{
+        fetch(`http://localhost:5036/api/Service/${id}`, {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",
@@ -22,22 +23,25 @@ export default function Warning(props){
                 console.log(res)
                 props.setDeleteFormState(false)
                 props.setReafreshTable(prev => !prev)
-            
+
             })
 
 
     }
 
 
-    return(
+    return (
         <>
-        <div className='warning-container'>
-            <h3>This post will be deleted</h3>
-            <button onClick={() => deleteFun(props.deleteId)}>oK</button>
-            <button onClick={deleteWarning}>cancel</button>
+            <div className="overlay-div">
 
-        </div>
-        
+                <div className='warning-container'>
+                    <h3>This post will be deleted</h3>
+                    <button onClick={() => deleteFun(props.deleteId)}>OK</button>
+                    <button onClick={deleteWarning}>cancel</button>
+
+                </div>
+            </div>
+
         </>
     )
 }

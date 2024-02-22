@@ -6,9 +6,6 @@ import PropTypes from 'prop-types';
 import DeleteWarning2 from "../models/DeleteWarning2"
 
 
-
-
-
 export default function ProductsCatalog(props){
 
     const [products, setProducts] = React.useState(null)
@@ -17,7 +14,7 @@ export default function ProductsCatalog(props){
     const [pageNum, setPageNum] = React.useState(1)
     const [deleteFormState, setDeleteFormState] = React.useState(false)
     const [deleteId, setDeleteId] = React.useState(null)
-    const[refreshTable, setReafreshTable] = React.useState(false)
+    // const[refreshTable, setReafreshTable] = React.useState(false)
 
 
     React.useEffect(() => {
@@ -62,7 +59,7 @@ export default function ProductsCatalog(props){
         }
 
 
-    }, [props.searchInput, pageNum ,refreshTable])
+    }, [props.searchInput, pageNum ,props.refreshTable])
 
 
 
@@ -89,8 +86,6 @@ export default function ProductsCatalog(props){
         productList = <tr><td>Loading...</td></tr>
     }
 
-
-
     function editProudct(id) {
         console.log(id);
         setProductForm(true)
@@ -101,9 +96,6 @@ export default function ProductsCatalog(props){
         setDeleteFormState(true)
         setDeleteId(id)
     }
-
-
-
 
     return (
         <>
@@ -135,13 +127,14 @@ export default function ProductsCatalog(props){
             {productForm ? <EditProductForm
                 productID={productId}
                 setProductForm={setProductForm}
+                setReafreshTable={props.setReafreshTable}
             />
 
                 : <></>
             }
 
             {
-                deleteFormState && deleteId !== null ? <DeleteWarning2 deleteId={deleteId} setDeleteFormState={setDeleteFormState} setReafreshTable={setReafreshTable}/> : <></>
+                deleteFormState && deleteId !== null ? <DeleteWarning2 deleteId={deleteId} setDeleteFormState={setDeleteFormState} setReafreshTable={props.setReafreshTable}/> : <></>
             }
 
         </>
@@ -150,5 +143,7 @@ export default function ProductsCatalog(props){
 }
 
 ProductsCatalog.propTypes = {
-    searchInput: PropTypes.string
+    searchInput: PropTypes.string,
+    refreshTable: PropTypes.bool,
+    setReafreshTable: PropTypes.func,
 };

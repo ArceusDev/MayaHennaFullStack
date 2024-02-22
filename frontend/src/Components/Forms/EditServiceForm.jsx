@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 
 import "./EditServiceForm.css"
 
+import Loader from "../models/Loader";
 
 
 export default function EditServiceForm(props) {
     const serviceId = props.serviceID;
 
     const [msg, setMsg] = React.useState(null)
+    const [loader, setLoader] = React.useState(false)
+
 
     const [serviceObj, setServiceObj] = React.useState(
         {
@@ -56,9 +59,9 @@ export default function EditServiceForm(props) {
 
     function handleSubmit(event) {
         event.preventDefault()
+        setLoader(true)
 
-
-
+        console.log(JSON.stringify(serviceObj));
         if (serviceId !== null) {  //update service
 
             fetch(`http://localhost:5036/api/Service/${serviceId}`, {
@@ -77,18 +80,21 @@ export default function EditServiceForm(props) {
                 }
             })
             .then(data => {
+                setLoader(false)
                 setMsg("Service details updated")
+                props.setReafreshTable(prev =>!prev)
             })
             .catch(error => {
                 console.error("Error updating service:", error)
+                setLoader(false)
                 setMsg("Some error occurred updating service")
             })
-
             
-
-
+            
+            
+            
         } else {      //add new service in this case
-
+            
             fetch(`http://localhost:5036/api/Service`, {
                 method: "POST",
                 body: JSON.stringify(serviceObj),
@@ -105,10 +111,13 @@ export default function EditServiceForm(props) {
                 }
             })
             .then(data => {
+                setLoader(false)
                 setMsg("New Service added")
+                props.setReafreshTable(prev =>!prev)
             })
             .catch(error => {
                 console.error("Error updating service:", error)
+                setLoader(false)
                 setMsg("Some error occurred adding new service")
             })
 
@@ -186,7 +195,8 @@ export default function EditServiceForm(props) {
                         </textarea>
 
 
-                        {msg !== null ? <h4 id="form-msg">{msg}</h4> : <></>}
+                        {/* {msg !== null ? <h4 id="form-msg">{msg}</h4> : <></>} */}
+                        {msg === null && loader ===true ? <h4 id="form-msg"> <Loader /> </h4>: <h4 id="form-msg">{msg}</h4>}
                         <button type="submit" className="form-submit">{serviceId === null ? "Add Service" : "Update service"}</button>
                     </form>
                 </div>
@@ -201,5 +211,6 @@ EditServiceForm.propTypes = {
         PropTypes.number,
         PropTypes.oneOf([null]),
     ]),
-    setServiceForm: PropTypes.func
+    setServiceForm: PropTypes.func,
+    setReafreshTable: PropTypes.func,
 };
